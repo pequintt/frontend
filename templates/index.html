@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Frontend 1.0</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 60px auto;
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+        }
+
+        input {
+            width: 70%;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        #status {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>Отправка данных</h2>
+
+<input
+    id="textInput"
+    type="text"
+    placeholder="Введите текст"
+>
+
+<button onclick="sendData()">
+    Отправить
+</button>
+
+<div id="status"></div>
+
+<script>
+async function sendData() {
+    const input = document.getElementById("textInput");
+    const status = document.getElementById("status");
+
+    const text = input.value.trim();
+
+    if (!text) {
+        status.textContent = "Введите данные";
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            "http://127.0.0.1:5000/api/data",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ text })
+            }
+        );
+
+        const result = await response.json();
+
+        status.textContent =
+            result.message || result.error;
+
+        if (response.ok) {
+            input.value = "";
+        }
+
+    } catch (error) {
+        status.textContent =
+            "Ошибка соединения с сервером";
+    }
+}
+</script>
+
+</body>
+</html>
