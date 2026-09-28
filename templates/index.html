@@ -46,6 +46,28 @@
 
 <div id="status"></div>
 
+<hr>
+
+<h2>Получение данных</h2>
+
+<input
+    id="limitInput"
+    type="number"
+    min="1"
+    placeholder="Количество записей"
+>
+
+<button onclick="loadData()">
+    Получить данные
+</button>
+
+<textarea
+    id="resultField"
+    readonly
+    rows="8"
+    style="width: 100%; margin-top: 10px;"
+></textarea>
+
 <script>
 async function sendData() {
     const input = document.getElementById("textInput");
@@ -84,6 +106,35 @@ async function sendData() {
             "Ошибка соединения с сервером";
     }
 }
+
+    async function loadData() {
+    const limit =
+        document.getElementById("limitInput").value;
+
+    const resultField =
+        document.getElementById("resultField");
+
+    let url =
+        "http://127.0.0.1:5000/api/data";
+
+    if (limit) {
+        url += "?limit=" + limit;
+    }
+
+    try {
+        const response = await fetch(url);
+
+        const result = await response.json();
+
+        resultField.value =
+            result.data || "Данных нет";
+
+    } catch (error) {
+        resultField.value =
+            "Ошибка соединения с сервером";
+    }
+}
+
 </script>
 
 </body>
