@@ -82,7 +82,7 @@ async function sendData() {
 
     try {
         const response = await fetch(
-            "http://127.0.0.1:5000/api/data",
+            "/api/data",
             {
                 method: "POST",
                 headers: {
@@ -114,8 +114,7 @@ async function sendData() {
     const resultField =
         document.getElementById("resultField");
 
-    let url =
-        "http://127.0.0.1:5000/api/data";
+    let url = "/api/data";
 
     if (limit) {
         url += "?limit=" + limit;
